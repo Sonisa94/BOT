@@ -2,9 +2,10 @@ from telethon import TelegramClient
 import requests
 from bs4 import BeautifulSoup
 import asyncio
-from telegram import Bot
+from telegram import Bot, Update
+from telegram.ext import Application, CommandHandler, CallbackContext
 import os
-
+import json
 TOKEN = os.environ.get("TOKENTELEGRAM")
 
 #CHAT_ID = < REPLACE WITH YOUR CHAT ID >
@@ -33,7 +34,7 @@ client = TelegramClient(sesion_name, API_ID, API_HASH)
 
 
 async def main():
-    results = []  
+    results = []
     try:
         print(f"Conectando al canal: {channel_username}")
 
@@ -47,9 +48,9 @@ async def main():
 
                         for endpoint in ENDPOINTS:
                             message = ''
-                            message += "================================================\n" 
+                            message += "================================================\n"
                             message += '                      ' + CATEGORIAS[endpoint] +'\n'
-                            message += "================================================\n"  
+                            message += "================================================\n"
                             print("==============================================================")
                             print('                      ' + CATEGORIAS[endpoint])
                             print("==============================================================")
@@ -61,7 +62,7 @@ async def main():
 
                                     soup = BeautifulSoup(response.text, 'html.parser')
                                     noticias_div = soup.find('div', class_='noticias')
-     
+
 
                                     text_center = noticias_div.find_all('div', class_='text-center')
                                     if text_center:
@@ -72,14 +73,19 @@ async def main():
                                                 link_url = link['href'].split('/')[-1].replace('-', ' ')
                                                 print(link_url)
                                                 message+=link_url + '\n'
-                                                
+
                                     else:
                                         print("No se encontró 'noticias' en el HTML.")
                                 else:
                                     print(f"Error al acceder a {full_url}: {response.status_code}")
                             except requests.RequestException as e:
                                 print(f"Error en la petición a {full_url}: {e}")
-                            await bot.send_message(chat_id = CHAT_ID, text=message)
+
+                            with open("./usuarios_registrados.json", 'r') as f:
+                                ids= json.load(f)
+
+                            for id in ids:
+                                await bot.send_message(chat_id =id, text=message)
 
     except Exception as e:
         print(f"Error: {e}")
@@ -88,4 +94,3 @@ async def main():
 if __name__ == '__main__':
     with client:
         client.loop.run_until_complete(main())
-
