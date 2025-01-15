@@ -32,6 +32,14 @@ channel_username = 'DonTorrent'
 sesion_name = 'mi_sesion'
 client = TelegramClient(sesion_name, API_ID, API_HASH)
 
+def get_tor_session():
+    session = requests.session()
+    # Tor uses the 9050 port as the default socks port
+    session.proxies = {'http':  'socks5://127.0.0.1:9050',
+                       'https': 'socks5://127.0.0.1:9050'}
+    return session
+
+session=get_tor_session()
 
 async def main():
     results = []
@@ -56,7 +64,7 @@ async def main():
                             print("==============================================================")
                             full_url = f"{url_part}{endpoint}"
                             try:
-                                response = requests.get(full_url, timeout=10)
+                                response = session.get(full_url, timeout=100)
                                 if response.status_code == 200:
                                     #print(f"HTML obtenido de {full_url}:\n{response.text[:500]}...")
 
