@@ -16,12 +16,12 @@ bot = Bot(token=TOKEN)
 ENDPOINTS = ['/descargar-peliculas', '/peliculas/4K', '/descargar-peliculas/hd', '/descargar-series', '/series/hd', '/documentales']
 
 CATEGORIAS = {
-    '/descargar-peliculas': 'Peliculas SD',
-    '/peliculas/4K': 'Peliculas 4K',
-    '/descargar-peliculas/hd': 'Peliculas HD',
-    '/descargar-series': 'Series SD',
-    '/series/hd': 'Series HD',
-    '/documentales': 'Documentales'
+    '/descargar-peliculas': 'Peliculas SD 🎥',
+    '/peliculas/4K': 'Peliculas 4K 🌟',
+    '/descargar-peliculas/hd': 'Peliculas HD 📺',
+    '/descargar-series': 'Series SD 📺',
+    '/series/hd': 'Series HD 📡',
+    '/documentales': 'Documentales 🎬'
 }
 BASE_URL = 'https://dontorrent.auction'
 
